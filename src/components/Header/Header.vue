@@ -82,6 +82,7 @@
   border-radius: 50%;
   margin-right: 12px;
   background-color: main.$white;
+  cursor: pointer;
 }
 
 .desctop-hidden {
