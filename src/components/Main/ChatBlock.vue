@@ -16,14 +16,15 @@ const toggleManagerMenu = () => {
   showManagerMenu.value = !showManagerMenu.value
 }
 
-const handleClickOutside = (event) => {
-  const dropdown = document.querySelector('.manager-dropdown')
-  const button = document.querySelector('.files-container__manager-button')
+const dropdownRef = ref(null)
+const buttonRef = ref(null)
 
+const handleClickOutside = (event) => {
   if (
-    dropdown &&
-    !dropdown.contains(event.target) &&
-    !button.contains(event.target)
+    dropdownRef.value &&
+    !dropdownRef.value.contains(event.target) &&
+    buttonRef.value &&
+    !buttonRef.value.contains(event.target)
   ) {
     showManagerMenu.value = false
   }
@@ -79,13 +80,19 @@ onBeforeUnmount(() => {
           <p>Jim Davidson</p>
           <a class="files-container__manager-mail">Jim Davidson@adaurum.ru</a>
         </div>
-        <button class="files-container__manager-button" @click="toggleManagerMenu">
-          <img src="@/assets/icons/ellipses.svg">
-        </button>
-        <div
-          v-if="showManagerMenu"
-          class="files-container__manager-dropdown"
-        >
+        <button
+            class="files-container__manager-button"
+            ref="buttonRef"
+            @click="toggleManagerMenu"
+                >
+                <img src="@/assets/icons/ellipses.svg" />
+                </button>
+
+                <div
+                v-if="showManagerMenu"
+                class="files-container__manager-dropdown"
+                ref="dropdownRef"
+                >
           <ul class="files-container__manager-list">
             <li class="files-container__manager-item" @click="console.log('Обратная связь')">Обратная связь о работе сервера</li>
             <li class="files-container__manager-item" @click="console.log('Сменить помощника')">Сменить помощника</li>

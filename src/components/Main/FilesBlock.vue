@@ -146,7 +146,7 @@ const currentDate = new Date().toLocaleDateString('ru-RU', {
         />
         <Button
           v-else
-          class="files-mobile__button files-mobile__button--mediaplan files-mobile__button--updated"
+          class="files-mobile__button files-mobile__button--mediaplan files-mobile__button--updated-purple"
           text="Медиапланы"
         >
           <img src="@/assets/icons/done.svg" alt="Готово" class="files-mobile__icon"/>
@@ -160,7 +160,7 @@ const currentDate = new Date().toLocaleDateString('ru-RU', {
         />
         <Button
           v-else
-          class="files-mobile__button files-mobile__button--report files-mobile__button--updated"
+          class="files-mobile__button files-mobile__button--report files-mobile__button--updated-blue"
           text="Отчеты"
         />
       </div>
@@ -221,7 +221,6 @@ const currentDate = new Date().toLocaleDateString('ru-RU', {
     margin: 6px 0 16px 0;
     font-size: 14px;
     color: #555;
-    font-style: italic;
     display: flex;
     align-items: center;
 
@@ -268,17 +267,16 @@ const currentDate = new Date().toLocaleDateString('ru-RU', {
     text-align: center;
     margin-right: 20px;
 
-    &--updated {
+    &--updated-purple {
       background-color: main.$white;
-    }
-
-    &--mediaplan {
       border: 1px solid main.$purple;
     }
 
-    &--report {
+    &--updated-blue {
+      background-color: main.$white;
       border: 1px solid main.$blue;
     }
+
   }
 
   &__icon {
