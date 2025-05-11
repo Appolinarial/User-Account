@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 import Mediaplan from './Mediaplan.vue'
 import Report from './Report.vue'
-import Button from '../common/Button.vue'
+import Button from '@/components/common/Button.vue'
 import { useFilesStore } from '@/stores/filesStore'
 
 const filesStore = useFilesStore()
@@ -177,6 +177,7 @@ const currentDate = new Date().toLocaleDateString('ru-RU', {
   border-radius: 20px;
   background-color: main.$white;
   margin-bottom: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 
   &__title {
     margin: 0;

@@ -1,8 +1,8 @@
 <script setup>
-import Footer from "../components/Foooter/Footer.vue"
+import Footer from "@/components/Foooter/Footer.vue"
 import Header from "@/components/Header/Header.vue";
-import FilesBlock from "@/components/Main/FilesBlock.vue";
-import ChatBlock from "@/components/Main/ChatBlock.vue";
+import FilesBlock from "@/components/Main/FilesBlock/FilesBlock.vue";
+import ChatBlock from "@/components/Main/ChatBlock/ChatBlock.vue";
 </script>
 
 <template>

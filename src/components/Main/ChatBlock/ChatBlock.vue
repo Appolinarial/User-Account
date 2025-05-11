@@ -2,7 +2,7 @@
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import { useFilesStore } from '@/stores/filesStore'
 import Button from "@/components/common/Button.vue";
-import Message from "@/components/Main/Message.vue";
+import Message from "@/components/Main/ChatBlock/Message.vue";
 import Usermessage from "./Usermessage.vue";
 import AdminMessage from "./AdminMessage.vue";
 
@@ -12,6 +12,7 @@ const filesStore = useFilesStore()
 
 const showManagerMenu = ref(false)
 
+//открытие/закрытие меню
 const toggleManagerMenu = () => {
   showManagerMenu.value = !showManagerMenu.value
 }
@@ -19,6 +20,7 @@ const toggleManagerMenu = () => {
 const dropdownRef = ref(null)
 const buttonRef = ref(null)
 
+//функция отслеживания клика вне контейнера с меню для его закрытия
 const handleClickOutside = (event) => {
   if (
     dropdownRef.value &&
@@ -29,37 +31,46 @@ const handleClickOutside = (event) => {
     showManagerMenu.value = false
   }
 }
-
-const getMediaplan = () => {
+// ассинхронные симуляции запросов на сервер от пользователя для получения медиаплана и отчета
+const getMediaplan = async () => {
   filesStore.addMediaplan();
+
+  const response = await fakeApiCall('Ваш медиаплан готов!');
 }
 
-const getReport = () => {
+const getReport = async () => {
   filesStore.addReport();
+
+  const response = await fakeApiCall('Ваш отчет готов!');
 }
 
-const bottomRef = ref(null);
+const messageWrapper = ref(null);
+
 const scrollToBottom = () => {
   nextTick(() => {
-    if (bottomRef.value) {
-      bottomRef.value.scrollIntoView({ behavior: 'smooth' });
+    if (messageWrapper.value) {
+      messageWrapper.value.scrollTop = messageWrapper.value.scrollHeight;
     }
   });
 };
-
-const sendMessage = (newMessage) => {
-  if (newMessage.trim() === '') return;
-
-  showPreview.value = false;
-  messages.value.push({
-    user: 'user',
-    text: newMessage,
+// Симуляция ассинхронного запроса с ответом от сервера чз 5с
+const fakeApiCall = (responseText) => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(responseText);
+    }, 500);
   });
+};
 
-  setTimeout(() => {
-    messages.value.push({ user: 'admin', text: 'Sent your question for processing' });
-    scrollToBottom();
-  }, 500);
+const sendMessage = async (newMessage) => {
+  if (newMessage.trim() === '') return; //прерываю отправку пустого смс
+
+  showPreview.value = false; //скрываю превью
+  messages.value.push({ user: 'user', text: newMessage }); //добавляю смс пользователя в чат
+
+  const response = await fakeApiCall('Sent your question for processing');
+  messages.value.push({ user: 'admin', text: response }); //добавляю смс от админа
+  scrollToBottom(); //функция скролла вниз чата
 };
 
 onMounted(() => {
@@ -110,6 +121,7 @@ onBeforeUnmount(() => {
           </div>
   
           <div v-else class="files-container__chat-messages-container" ref="messageWrapper">
+            <span class="files-container__chat-messages-container-date">Сегодня, 20:43</span>
             <div v-for="(msg, index) in messages" :key="index">
               <Usermessage v-if="msg.user === 'user'" :text="msg.text" />
               <AdminMessage v-else :text="msg.text" />
@@ -136,6 +148,7 @@ onBeforeUnmount(() => {
   height: 709px;
   border-radius: 20px;
   background-color: main.$white;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 
   &__header-wrapper {
     display: flex;
@@ -280,6 +293,11 @@ onBeforeUnmount(() => {
     padding: 20px 20px 0px 20px;
     width: 100%;
   }
+
+  &__chat-messages-container-date {
+    color:#525252;
+    text-align: center;
+  }
 }
 
 @media screen and (max-width: 1200px) {
@@ -298,6 +316,12 @@ onBeforeUnmount(() => {
 
 @media screen and (max-width: 765px) {
   .files-container {
+    border-radius: 0;
+
+    &__chat {
+      border-radius: 0;
+    }
+    
     &__chat-buttons {
       justify-content: flex-end;
       padding-right: 20px;
